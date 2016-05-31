@@ -42,11 +42,11 @@ public typealias AliasDisplayInitializer = @convention(block) (String) -> AliasD
   private static var _defaultDisplayInitializer = { alias -> AliasDisplay in return DefaultAliasDisplay(alias: alias) }
   
   public static func initialize(provider provider: AliasDisplayProvider) {
-    _sharedProvider = sharedProvider
+    _sharedProvider = provider
   }
   
   public static func initialize(provider provider: AliasDisplayProvider, defaultDisplayInitializer: AliasDisplayInitializer?) {
-    _sharedProvider = sharedProvider
+    _sharedProvider = provider
     _defaultDisplayInitializer = defaultDisplayInitializer ?? _defaultDisplayInitializer
   }
   
