@@ -351,20 +351,18 @@ NSComparisonResult sortObjects(NSArray *sortDescriptors, id obj1, id obj2);
 
 -(void) _fireChangeType:(FetchedResultsChangeType)type object:(Model *)object index:(NSUInteger)index newIndex:(NSUInteger)newIndex applicator:(void (^)(Model *object))applicator
 {
-  dispatch_sync(dispatch_get_main_queue(), ^{
+  dispatch_sync(_dispatchQueue, ^{
     
     Model *result = _request.liveResults ? [_dao refreshObject:object] : object;
     
     applicator(result);
 
     if ([self.delegate respondsToSelector:@selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)]) {
-      dispatch_async(_dispatchQueue, ^{
-        [self.delegate controller:self
-                  didChangeObject:result
-                          atIndex:index
-                    forChangeType:type
-                         newIndex:newIndex];
-      });
+      [self.delegate controller:self
+                didChangeObject:result
+                        atIndex:index
+                  forChangeType:type
+                       newIndex:newIndex];
     }
 
   });
